@@ -27,27 +27,37 @@ namespace LiteDBTest.Controllers
 
         // GET: api/Customers/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public Customer Get(string name)
         {
-            return "value";
+
+
+            return _context.Context.GetCollection<Customer>("customers").Find(x => x.Name == name).FirstOrDefault();
         }
 
         // POST: api/Customers
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post(Customer customer)
         {
+            var customers = _context.Context.GetCollection<Customer>("customers");
+            customers.Insert(customer);
+            customers.EnsureIndex(x => x.Name);
+
         }
 
         // PUT: api/Customers/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public void Put(Customer customer)
         {
+            var customers = _context.Context.GetCollection<Customer>("customers");
+            customers.Update(customer);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            var customers = _context.Context.GetCollection<Customer>("customers");
+            customers.Delete(id);
         }
     }
 }
