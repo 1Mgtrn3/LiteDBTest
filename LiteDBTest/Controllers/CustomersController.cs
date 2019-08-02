@@ -17,26 +17,27 @@ namespace LiteDBTest.Controllers
         {
             _context = context;
         }
-        // GET: api/Customers
-        [HttpGet]
-        public IEnumerable<Customer> Get()
+        // GET: api/Customers/credentials?fileName=testdb
+        [HttpGet("credentials")]
+        public IEnumerable<Customer> Get(string fileName)
         {
+
             var customers = _context.Context.GetCollection<Customer>("customers");
             return customers.FindAll();//new string[] { "value1", "value2" };
         }
 
-        // GET: api/Customers/5
-        [HttpGet("{id}", Name = "Get")]
-        public Customer Get(string name)
+        // GET: api/Customers/credentials?fileName=testdb&name=TestMan
+        [HttpGet("credentials")]
+        public Customer Get(string fileName, string name)
         {
 
 
             return _context.Context.GetCollection<Customer>("customers").Find(x => x.Name == name).FirstOrDefault();
         }
 
-        // POST: api/Customers
-        [HttpPost]
-        public void Post(Customer customer)
+        // POST: api/Customers/credentials?fileName=testdb
+        [HttpPost("credentials")]
+        public void Post(string fileName, Customer customer)
         {
             var customers = _context.Context.GetCollection<Customer>("customers");
             customers.Insert(customer);
@@ -44,17 +45,17 @@ namespace LiteDBTest.Controllers
 
         }
 
-        // PUT: api/Customers/5
-        [HttpPut]
-        public void Put(Customer customer)
+        // PUT: api/Customers/credentials?fileName=testdb
+        [HttpPut("credentials")]
+        public void Put(string fileName, Customer customer)
         {
             var customers = _context.Context.GetCollection<Customer>("customers");
             customers.Update(customer);
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // DELETE: api/ApiWithActions/credentials?fileName=testdb&id=5
+        [HttpDelete("credentials")]
+        public void Delete(string fileName, int id)
         {
             var customers = _context.Context.GetCollection<Customer>("customers");
             customers.Delete(id);
