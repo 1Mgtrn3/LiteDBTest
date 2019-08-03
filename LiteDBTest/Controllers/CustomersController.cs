@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using LiteDBTest.Models;
+using LiteDB;
 
 namespace LiteDBTest.Controllers
 {
@@ -12,53 +13,71 @@ namespace LiteDBTest.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly LiteDbContext _context;
-        public CustomersController(LiteDbContext context)
-        {
-            _context = context;
-        }
+        
         // GET: api/Customers/credentials?fileName=testdb
-        [HttpGet("credentials")]
+        [HttpGet("findAll")]
         public IEnumerable<Customer> Get(string fileName)
         {
+            using (var Context = new LiteDatabase(@fileName))
+            {
+                var customers = Context.GetCollection<Customer>("customers");
+                return customers.FindAll();
+            }
 
-            var customers = _context.Context.GetCollection<Customer>("customers");
-            return customers.FindAll();//new string[] { "value1", "value2" };
+                //new string[] { "value1", "value2" };
         }
 
         // GET: api/Customers/credentials?fileName=testdb&name=TestMan
-        [HttpGet("credentials")]
+        [HttpGet("find")]
         public Customer Get(string fileName, string name)
         {
-
-
-            return _context.Context.GetCollection<Customer>("customers").Find(x => x.Name == name).FirstOrDefault();
+            using (var Context = new LiteDatabase(@fileName))
+            {
+                
+                return Context.GetCollection<Customer>("customers").Find(x => x.Name == name).FirstOrDefault();
+            }
+            
         }
 
         // POST: api/Customers/credentials?fileName=testdb
-        [HttpPost("credentials")]
+        [HttpPost("create")]
         public void Post(string fileName, Customer customer)
         {
-            var customers = _context.Context.GetCollection<Customer>("customers");
-            customers.Insert(customer);
-            customers.EnsureIndex(x => x.Name);
+            
+            using (var Context = new LiteDatabase(@fileName))
+            {
+                var customers = Context.GetCollection<Customer>("customers");
+                customers.Insert(customer);
+                customers.EnsureIndex(x => x.Name);
 
+                
+            }
         }
 
         // PUT: api/Customers/credentials?fileName=testdb
-        [HttpPut("credentials")]
+        [HttpPut("edit")]
         public void Put(string fileName, Customer customer)
         {
-            var customers = _context.Context.GetCollection<Customer>("customers");
-            customers.Update(customer);
+            using (var Context = new LiteDatabase(@fileName))
+            {
+               
+                var customers = Context.GetCollection<Customer>("customers");
+                customers.Update(customer);
+            }
+
         }
 
         // DELETE: api/ApiWithActions/credentials?fileName=testdb&id=5
-        [HttpDelete("credentials")]
+        [HttpDelete("delete")]
         public void Delete(string fileName, int id)
         {
-            var customers = _context.Context.GetCollection<Customer>("customers");
-            customers.Delete(id);
+            
+            using (var Context = new LiteDatabase(@fileName))
+            {
+                var customers = Context.GetCollection<Customer>("customers");
+                customers.Delete(id);
+                
+            }
         }
     }
 }
