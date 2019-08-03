@@ -13,8 +13,8 @@ namespace LiteDBTest.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        
-        // GET: api/Customers/credentials?fileName=testdb
+
+        // GET: api/Customers/findAll?fileName=testdb
         [HttpGet("findAll")]
         public IEnumerable<Customer> Get(string fileName)
         {
@@ -27,7 +27,7 @@ namespace LiteDBTest.Controllers
                 //new string[] { "value1", "value2" };
         }
 
-        // GET: api/Customers/credentials?fileName=testdb&name=TestMan
+        // GET: api/Customers/find?fileName=testdb&name=TestMan
         [HttpGet("find")]
         public Customer Get(string fileName, string name)
         {
@@ -39,7 +39,7 @@ namespace LiteDBTest.Controllers
             
         }
 
-        // POST: api/Customers/credentials?fileName=testdb
+        // POST: api/Customers/create?fileName=testdb
         [HttpPost("create")]
         public void Post(string fileName, Customer customer)
         {
@@ -54,7 +54,7 @@ namespace LiteDBTest.Controllers
             }
         }
 
-        // PUT: api/Customers/credentials?fileName=testdb
+        // PUT: api/Customers/edit?fileName=testdb
         [HttpPut("edit")]
         public void Put(string fileName, Customer customer)
         {
@@ -67,7 +67,7 @@ namespace LiteDBTest.Controllers
 
         }
 
-        // DELETE: api/ApiWithActions/credentials?fileName=testdb&id=5
+        // DELETE: api/ApiWithActions/delete?fileName=testdb&id=5
         [HttpDelete("delete")]
         public void Delete(string fileName, int id)
         {
